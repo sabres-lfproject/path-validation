@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const shell = require('shelljs');
+var FormData = require('form-data');
+var fs = require('fs');
+var axios = require('axios');
+const { response } = require('express');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -102,6 +106,47 @@ router.post('/upload', (req, res) => {
       data: "File uploaded!"
     });
   });
+});
+
+const readFileFromPath = async (dataPath) => {
+  return new Promise((resolve, reject) => {
+    var stream = fs.createReadStream(dataPath);
+    stream.on('data', (chunk) => {
+      // console.log(chunk);
+    });
+    stream.on('end', () => { 
+      console.log("hello");
+      resolve(stream);
+    });
+    stream.on('error', err => reject(err));
+  });  
+};
+
+router.post('/sendData', async (req, res) => {
+  let url = 'http://' + req.body.url + '/upload';
+  let number = req.body.number;
+  try {
+    const form = new FormData();
+    const stream = await readFileFromPath('test.txt');
+    const formHeaders = form.getHeaders();
+    form.append('sampleFile', stream);
+    var response = await axios.post(url, form, {
+      headers: {
+        ...formHeaders,
+      },
+    });
+    console.log(response);
+    res.json({
+      status: "success",
+      data: "send data successfully"
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: "error",
+      error: error.message
+    });
+  }
 });
 
 module.exports = router;
