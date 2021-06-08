@@ -4,7 +4,6 @@ const shell = require('shelljs');
 var FormData = require('form-data');
 var fs = require('fs');
 var axios = require('axios');
-const { response } = require('express');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -124,22 +123,23 @@ const readFileFromPath = async (dataPath) => {
 
 router.post('/sendData', async (req, res) => {
   let url = 'http://' + req.body.url + '/upload';
-  let number = req.body.number;
+  let dataPath = __dirname + '/../data/' + req.body.filename;
   try {
     const form = new FormData();
-    const stream = await readFileFromPath('test.txt');
-    const formHeaders = form.getHeaders();
+    // const stream = await readFileFromPath('test.txt');
+    var stream = fs.createReadStream(dataPath);
     form.append('sampleFile', stream);
-    var response = await axios.post(url, form, {
+    const formHeaders = form.getHeaders();
+    var remoteRes = await axios.post(url, form, {
       headers: {
         ...formHeaders,
       },
     });
-    console.log(response);
-    res.json({
+    return res.json({
       status: "success",
       data: "send data successfully"
     });
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({
