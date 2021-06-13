@@ -10,6 +10,21 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+router.get('/dataList', async (req, res) => {
+  fs.readdir(__dirname + '/../data/', (err, files) => {
+    if (err) {
+      return res.status(500).json({
+        status: "error",
+        error: err
+      });
+    }
+    return res.json({
+      status: "success",
+      data: files      
+    });
+  });
+});
+
 router.post('/initialize', (req, res) => {
   let number = req.body.number;
   try {
