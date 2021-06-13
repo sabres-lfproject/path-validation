@@ -150,6 +150,7 @@ router.post('/sendData', async (req, res) => {
         ...formHeaders,
       },
     });
+    // console.log(remoteRes.data);
     return res.json({
       status: "success",
       data: "send data successfully"
