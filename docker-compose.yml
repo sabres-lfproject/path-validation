@@ -1,9 +1,9 @@
 version: '3.7'
 
 services:
-  nodes:
+  sabres_node:
     build: .
-    image: 'nodes:latest'
+    image: 'sabres_node:latest'
     ports:
       - '3000'
     networks:

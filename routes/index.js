@@ -4,10 +4,27 @@ const shell = require('shelljs');
 var FormData = require('form-data');
 var fs = require('fs');
 var axios = require('axios');
+const sabres_port = 3000;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
+});
+
+router.get('/clearData', async (req, res) => {
+  try {
+    shell.rm('-rf', __dirname + '/../data/*');
+
+    res.json({
+      status: "success",
+      data: "clear data successfully"
+    });
+  } catch (error) {
+    return res.json({
+      status: "error",
+      error: error
+    });
+  }  
 });
 
 router.get('/dataList', async (req, res) => {
@@ -32,7 +49,7 @@ router.post('/initialize', (req, res) => {
 
     res.json({
       status: "success",
-      data: "initialize successful"
+      data: "initialize successfully"
     });
   } catch (error) {
     return res.json({
@@ -49,7 +66,7 @@ router.post('/genproof', (req, res) => {
 
     res.json({
       status: "success",
-      data: "generate proof successful"
+      data: "generate proof successfully"
     });
   } catch (error) {
     return res.json({
@@ -122,22 +139,22 @@ router.post('/upload', (req, res) => {
   });
 });
 
-const readFileFromPath = async (dataPath) => {
-  return new Promise((resolve, reject) => {
-    var stream = fs.createReadStream(dataPath);
-    stream.on('data', (chunk) => {
-      // console.log(chunk);
-    });
-    stream.on('end', () => { 
-      console.log("hello");
-      resolve(stream);
-    });
-    stream.on('error', err => reject(err));
-  });  
-};
+// const readFileFromPath = async (dataPath) => {
+//   return new Promise((resolve, reject) => {
+//     var stream = fs.createReadStream(dataPath);
+//     stream.on('data', (chunk) => {
+//       // console.log(chunk);
+//     });
+//     stream.on('end', () => { 
+//       console.log("hello");
+//       resolve(stream);
+//     });
+//     stream.on('error', err => reject(err));
+//   });  
+// };
 
 router.post('/sendData', async (req, res) => {
-  let url = 'http://' + req.body.url + '/upload';
+  let url = 'http://' + req.body.url + ':' + sabres_port + '/upload';
   let dataPath = __dirname + '/../data/' + req.body.filename;
   try {
     const form = new FormData();
