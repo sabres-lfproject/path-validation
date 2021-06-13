@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  nodes:
+    build: .
+    image: 'nodes:latest'
+    ports:
+      - '3000'
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
+    driver: bridge
