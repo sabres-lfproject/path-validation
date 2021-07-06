@@ -109,6 +109,24 @@ router.post('/verifyproof', (req, res) => {
   }  
 });
 
+router.post('/xorhash', (req, res) => {
+  let first_secret = req.body.first_secret;
+  let second_secret = req.body.second_secret;
+  try {
+    shell.exec('./xorhash.sh ' + first_secret + ' ' + second_secret);
+
+    res.json({
+      status: "success",
+      data: "xor hash successfully"
+    });
+  } catch (error) {
+    return res.json({
+      status: "error",
+      error: error
+    });
+  }  
+});
+
 router.post('/upload', (req, res) => {
   let sampleFile;
   let uploadPath;
