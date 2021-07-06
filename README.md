@@ -25,6 +25,7 @@ docker-compose down
 * \[POST\] [/genproof](#generate-hash-and-proof)
 * \[POST\] [/verifyproof](#verify-proof)
 * \[POST\] [/sendData](#send-data)
+* \[POST\] [/xorhash](#xorhash)
 * \[GET\] [/dataList](#show-data-list)
 * \[GET\] [/clearData](#clear-data-list)
 #### Initialize
@@ -61,6 +62,16 @@ curl --location --request POST '127.0.0.1:52090/sendData' \
 --data-raw '{
     "url": "sabres_sabres_node_2",
     "filename": "2.secret",
+}'
+```
+#### Xorhash
+Given two file name and make them xor together and hash the new.secret
+```
+curl --location --request POST '0.0.0.0:52090/xorhash' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "first_secret": "4.secret",
+    "second_secret": "5.secret"
 }'
 ```
 #### Show Data List
