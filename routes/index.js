@@ -46,7 +46,7 @@ router.post('/initialize', (req, res) => {
   let number = req.body.number;
   try {
     shell.exec('./initialize.sh ' + number);
-
+    shell.exec('./genhashonly2.sh ' + number);
     res.json({
       status: "success",
       data: "initialize successfully"
