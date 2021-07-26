@@ -60,10 +60,19 @@ router.post('/initialize', (req, res) => {
 });
 
 router.post('/genproof', (req, res) => {
-  let number = req.body.number;
+  let first_number = req.body.first_number;
+  let second_number = req.body.second_number;
   try {
-    shell.exec('./genproof.sh ' + number);
-
+    // shell.exec('./genproof.sh ' + number);
+    console.log(__dirname);
+    if (!second_number) {
+      console.log("no second number");
+      shell.exec('./genproof.sh ' + first_number);
+    } else {
+      console.log("second number");
+      shell.exec('./genproof.sh ' + first_number + " " + second_number);
+    }
+    
     res.json({
       status: "success",
       data: "generate proof successfully"

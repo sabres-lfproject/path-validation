@@ -39,11 +39,14 @@ curl --location --request POST '127.0.0.1:52090/initialize' \
 }'
 ```
 #### Generate Hash and Proof
+If only given first number, then it will generate hash without xor operation.
+Hash file's name will be as same as the first number's name.
 ```
 curl --location --request POST '127.0.0.1:52090/genproof' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "number": 5
+    "first_number": 2,
+    "second_number": 3
 }'
 ```
 #### Verify Proof
