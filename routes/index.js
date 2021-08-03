@@ -4,7 +4,7 @@ const shell = require('shelljs');
 var FormData = require('form-data');
 var fs = require('fs');
 var axios = require('axios');
-const sabres_port = 3000;
+var { sendData } = require("../controller/nodeController");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -180,33 +180,6 @@ router.post('/upload', (req, res) => {
 //   });  
 // };
 
-router.post('/sendData', async (req, res) => {
-  let url = 'http://' + req.body.url + ':' + sabres_port + '/upload';
-  let dataPath = __dirname + '/../data/' + req.body.filename;
-  try {
-    const form = new FormData();
-    // const stream = await readFileFromPath('test.txt');
-    var stream = fs.createReadStream(dataPath);
-    form.append('sampleFile', stream);
-    const formHeaders = form.getHeaders();
-    var remoteRes = await axios.post(url, form, {
-      headers: {
-        ...formHeaders,
-      },
-    });
-    // console.log(remoteRes.data);
-    return res.json({
-      status: "success",
-      data: "send data successfully"
-    });
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: "error",
-      error: error.message
-    });
-  }
-});
+router.post('/sendData', sendData);
 
 module.exports = router;
