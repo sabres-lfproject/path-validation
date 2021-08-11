@@ -8,6 +8,8 @@ services:
       - '3000'
     networks:
       - internal_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   internal_network:

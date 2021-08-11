@@ -11,6 +11,30 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+router.get('/info', async (req, res) => {
+  let hostname = process.env.HOSTNAME;
+  // console.log('The value of HOSTNAME is:', hostname);
+  var remoteRes = await axios.get('/containers/json', {
+    socketPath: '/var/run/docker.sock'
+  });
+  let data = remoteRes.data;
+  let localName = "";
+  let nodeNumber = 0;
+
+  for (let idx in data) {
+    let name = data[idx].Names[0];
+    if (name.substr(0, 19) == "/sabres_sabres_node") {
+      nodeNumber++;
+    }
+
+    let id = data[idx].Id;
+    if (id.substr(0, 12) == hostname) {
+      localName = name.substr(1);
+    }
+  }
+  res.json({"status": "success", "message": `There are ${nodeNumber} sabres node are running. This node's name is ${localName}`});
+});
+
 router.get('/clearData', async (req, res) => {
   try {
     shell.rm('-rf', __dirname + '/../data/*');
