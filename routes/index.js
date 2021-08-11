@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-router.get('/info', async (req, res) => {
+const getNamesAndNodeNumbers = async () => {
   let hostname = process.env.HOSTNAME;
   // console.log('The value of HOSTNAME is:', hostname);
   var remoteRes = await axios.get('/containers/json', {
@@ -32,6 +32,12 @@ router.get('/info', async (req, res) => {
       localName = name.substr(1);
     }
   }
+
+  return { localName, nodeNumber };
+}
+
+router.get('/info', async (req, res) => {
+  let { localName, nodeNumber } = await getNamesAndNodeNumbers();
   res.json({"status": "success", "message": `There are ${nodeNumber} sabres node are running. This node's name is ${localName}`});
 });
 
