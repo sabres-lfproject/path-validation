@@ -12,6 +12,11 @@ const sendData = async (req, res) => {
     var stream = fs.createReadStream(dataPath);
     form.append('sampleFile', stream);
     const formHeaders = form.getHeaders();
+    let routePath = req.route.path;
+    if (routePath == "/sendContent" || routePath == "/upload") {
+      form.append('sendContent', 'true');
+      form.append('filename', req.body.filename);
+    }
     var remoteRes = await axios.post(url, form, {
       headers: {
         ...formHeaders,

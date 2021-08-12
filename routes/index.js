@@ -166,7 +166,7 @@ router.post('/xorhash', (req, res) => {
   }  
 });
 
-router.post('/upload', (req, res) => {
+router.post('/upload', async (req, res, next) => {
   let sampleFile;
   let uploadPath;
 
@@ -182,21 +182,31 @@ router.post('/upload', (req, res) => {
   uploadPath = __dirname + '/../data/' + sampleFile.name;
 
   // Use the mv() method to place the file somewhere on your server
-  sampleFile.mv(uploadPath, function(err) {
+  sampleFile.mv(uploadPath, async err => {
     if (err)
       return res.status(500).json({
         status: "error",
         error: err
       });
 
-
+    if (req.body.sendContent == "true") {
+      let { localName, nodeNumber } = await getNamesAndNodeNumbers();
+      let localIdx = Number(localName.substr(localName.length - 1));
+      if (localIdx == nodeNumber) {
+        // console.log("this is the end");
+        return res.json({"status": "success", "message": "there is no next node"});
+      } else {
+        req.body.url = "sabres_sabres_node_" + (localIdx + 1);
+        return next();
+      }
+    }
 
     return res.json({
       status: "success",
       data: "File uploaded!"
     });
   });
-});
+}, sendData);
 
 // const readFileFromPath = async (dataPath) => {
 //   return new Promise((resolve, reject) => {
