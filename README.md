@@ -25,7 +25,9 @@ docker-compose down
 * \[POST\] [/genproof](#generate-hash-and-proof)
 * \[POST\] [/verifyproof](#verify-proof)
 * \[POST\] [/sendData](#send-data)
+* \[POST\] [/sendContent](#send-content)
 * \[POST\] [/xorhash](#xorhash)
+* \[GET\] [/info](#information)
 * \[GET\] [/dataList](#show-data-list)
 * \[GET\] [/clearData](#clear-data-list)
 #### Initialize
@@ -67,6 +69,16 @@ curl --location --request POST '127.0.0.1:52090/sendData' \
     "filename": "2.secret",
 }'
 ```
+#### Send Content
+Sending data from some node to the receiver node.
+Because the node will deliver the data by fixed path (e.g. 1, 2, 3, 4), so it doesn't have to provide the url.
+```
+curl --location --request POST '127.0.0.1:52090/sendContent' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "filename": "1.secret",
+}'
+```
 #### Xorhash
 Given two file name and make them xor together and hash the new.secret
 ```
@@ -76,6 +88,11 @@ curl --location --request POST '0.0.0.0:52090/xorhash' \
     "first_secret": "4.secret",
     "second_secret": "5.secret"
 }'
+```
+#### Information
+it will return node hostname and the number of node in the network
+```
+curl --location --request GET '127.0.0.1:52090/info'
 ```
 #### Show Data List
 ```
