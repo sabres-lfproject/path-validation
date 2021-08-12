@@ -189,6 +189,8 @@ router.post('/upload', (req, res) => {
         error: err
       });
 
+
+
     return res.json({
       status: "success",
       data: "File uploaded!"
@@ -212,13 +214,13 @@ router.post('/upload', (req, res) => {
 
 router.post('/sendData', sendData);
 
-router.post('/sendContent', async (req, res) => {
+router.post('/sendContent', async (req, res, next) => {
   let { localName, nodeNumber } = await getNamesAndNodeNumbers();
   let localIdx = Number(localName.substr(localName.length - 1));
   if (localIdx == nodeNumber) {
     res.json({"status": "success", "message": "there is no next node"});
   } else {
-    req.body.url = sabres_sabres_node_ + (localIdx + 1)
+    req.body.url = "sabres_sabres_node_" + (localIdx + 1);
     next();
   }
 }, sendData);
