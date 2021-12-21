@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 const getNamesAndNodeNumbers = async () => {
   let hostname = process.env.HOSTNAME;
-  // console.log('The value of HOSTNAME is:', hostname);
+  console.log('The value of HOSTNAME is:', hostname);
   var remoteRes = await axios.get('/containers/json', {
     socketPath: '/var/run/docker.sock'
   });
@@ -105,7 +105,7 @@ router.post('/genproof', (req, res) => {
     
     res.json({
       status: "success",
-      data: "generate proof successfully"
+      data: "generate proof successfully now"
     });
   } catch (error) {
     return res.json({
@@ -191,7 +191,7 @@ router.post('/upload', async (req, res, next) => {
 
     if (req.body.sendContent == "true") {
       let { localName, nodeNumber } = await getNamesAndNodeNumbers();
-      let localIdx = Number(localName.substr(localName.length - 1));
+      let localIdx = Number(localName.substr(19));
       if (localIdx == nodeNumber) {
         // console.log("this is the end");
         return res.json({"status": "success", "message": "there is no next node"});
@@ -226,7 +226,7 @@ router.post('/sendData', sendData);
 
 router.post('/sendContent', async (req, res, next) => {
   let { localName, nodeNumber } = await getNamesAndNodeNumbers();
-  let localIdx = Number(localName.substr(localName.length - 1));
+  let localIdx = Number(localName.substr(19));
   if (localIdx == nodeNumber) {
     res.json({"status": "success", "message": "there is no next node"});
   } else {
@@ -234,5 +234,17 @@ router.post('/sendContent', async (req, res, next) => {
     next();
   }
 }, sendData);
+
+router.post('/backward', async (req, res, next) => {
+  let { localName, nodeNumber } = await getNamesAndNodeNumbers();
+  let localIdx = Number(localName.substr(19));
+  if (localIdx == 1) {
+    res.json({"status": "success", "message": "there is no previous node"});
+  } else {
+    req.body.url = "sabres_sabres_node_" + (localIdx - 1);
+    next();
+  }
+}, sendData);
+
 
 module.exports = router;

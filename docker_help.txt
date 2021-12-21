@@ -1,0 +1,6 @@
+after change to the local repo:
+
+sudo docker build .
+sudo docker tag 30d557e689d5 sabres_node:latest
+
+sudo docker exec -ti sabres_sabres_node_1 /bin/bash

@@ -1,5 +1,9 @@
 version: '3.7'
 
+networks:
+  internal_network:
+    driver: bridge
+
 services:
   sabres_node:
     build: .
@@ -10,7 +14,3 @@ services:
       - internal_network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-networks:
-  internal_network:
-    driver: bridge

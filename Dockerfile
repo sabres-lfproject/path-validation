@@ -1,8 +1,15 @@
 FROM ubuntu:16.04
 
 SHELL ["/bin/bash", "-c"]
+RUN sed -i ~/.profile -e 's/mesg n || true/tty -s \&\& mesg n/g'
 RUN apt update -y && apt upgrade -y \
-    && apt install -y libssl-dev curl
+    && apt install -y libssl-dev curl 
+RUN apt-get update && apt-get install build-essential -y && apt-get install pkg-config -y
+RUN apt-get install cmake git libgmp3-dev -y
+RUN apt-get install libprocps-dev -y && apt-get install python-markdown -y && apt-get install libboost-all-dev -y 
+RUN apt install vim -y
+
+
 
 ENV HOME /root
 ENV NVM_DIR $HOME/.nvm
@@ -21,5 +28,7 @@ COPY . /root/sabres/
 WORKDIR /root/sabres/
 
 RUN npm install
+RUN cd libsnark-test && git submodule update --init --recursive && cd build && cmake .. && make
+
 
 ENTRYPOINT [ "./entrypoint.sh"]
