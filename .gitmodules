@@ -1,0 +1,3 @@
+[submodule "libsnark-test"]
+	path = libsnark-test
+	url = https://github.com/wzjin2017/libsnark-test.git
