@@ -200,6 +200,31 @@ router.post('/upload', async (req, res, next) => {
         return next();
       }
     }
+    if (req.body.chainIdeal == "true") {
+      req.route.path = "/chainIdeal";
+      let { localName, nodeNumber } = await getNamesAndNodeNumbers();
+      let localIdx = Number(localName.substr(19));
+      if (localIdx == nodeNumber) {
+        // console.log("this is the end");
+        return res.json({"status": "success", "message": "there is no next node"});
+      } else {
+        req.body.url = "sabres_sabres_node_" + (localIdx + 1);
+        return next();
+      }
+    }
+
+        if (req.body.NIZK == "true") {
+      req.route.path = "/NIZK";
+      let { localName, nodeNumber } = await getNamesAndNodeNumbers();
+      let localIdx = Number(localName.substr(19));
+      if (localIdx == nodeNumber) {
+        // console.log("this is the end");
+        return res.json({"status": "success", "message": "there is no next node"});
+      } else {
+        req.body.url = "sabres_sabres_node_" + (localIdx + 1);
+        return next();
+      }
+    }
 
     return res.json({
       status: "success",
@@ -246,5 +271,26 @@ router.post('/backward', async (req, res, next) => {
   }
 }, sendData);
 
+router.post('/chainIdeal', async (req, res, next) => {
+  let { localName, nodeNumber } = await getNamesAndNodeNumbers();
+  let localIdx = Number(localName.substr(19));
+  if (localIdx == nodeNumber) {
+    res.json({"status": "success", "message": "there is no next node"});
+  } else {
+    req.body.url = "sabres_sabres_node_" + (localIdx + 1);
+    next();
+  }
+}, sendData);
+
+router.post('/NIZK', async (req, res, next) => {
+  let { localName, nodeNumber } = await getNamesAndNodeNumbers();
+  let localIdx = Number(localName.substr(19));
+  if (localIdx == nodeNumber) {
+    res.json({"status": "success", "message": "there is no next node"});
+  } else {
+    req.body.url = "sabres_sabres_node_" + (localIdx + 1);
+    next();
+  }
+}, sendData);
 
 module.exports = router;

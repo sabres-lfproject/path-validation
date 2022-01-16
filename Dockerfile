@@ -28,7 +28,7 @@ COPY . /root/sabres/
 WORKDIR /root/sabres/
 
 RUN npm install
-RUN cd libsnark-test && git submodule update --init --recursive && cd build && cmake .. && make
+RUN cd libsnark-test && git submodule update --init --recursive && mkdir build && cd build && cmake .. && make
 
 
 ENTRYPOINT [ "./entrypoint.sh"]

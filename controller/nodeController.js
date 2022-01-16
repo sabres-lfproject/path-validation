@@ -19,6 +19,18 @@ const sendData = async (req, res) => {
       form.append('filename', req.body.filename);
       shell.exec('./xorhash.sh ' + '1.secret' + ' ' + 'new.secret');
     }
+    if (routePath == "/chainIdeal") {
+      form.append('chainIdeal', 'true');
+
+      form.append('filename', req.body.filename);
+      shell.exec('./time.sh');
+    }
+    if (routePath == "/NIZK") {
+      form.append('NIZK', 'true');
+     
+      form.append('filename', req.body.filename);
+      shell.exec('./NIZK.sh');
+    }
     var remoteRes = await axios.post(url, form, {
       headers: {
         ...formHeaders,
