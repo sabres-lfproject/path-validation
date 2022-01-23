@@ -26,6 +26,8 @@ docker-compose down
 * \[POST\] [/verifyproof](#verify-proof)
 * \[POST\] [/sendData](#send-data)
 * \[POST\] [/sendContent](#send-content)
+* \[POST\] [/chainIdeal](#ideal)
+* \[POST\] [/NIZK](#xor-hash-nizk)
 * \[POST\] [/xorhash](#xorhash)
 * \[GET\] [/info](#information)
 * \[GET\] [/dataList](#show-data-list)
@@ -66,17 +68,37 @@ curl --location --request POST '127.0.0.1:52090/sendData' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "url": "sabres_sabres_node_2",
-    "filename": "2.secret",
+    "filename": "2.secret"
 }'
 ```
-#### Send Content
+#### Ideal World Functionality
+Sending data from some node to the receiver node.
+Because the node will deliver the data by fixed path (e.g. 1, 2, 3, 4), so it doesn't have to provide the url.
+```
+curl --location --request POST '127.0.0.1:52090/chainIdeal' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "filename": "1.secret"
+}'
+```
+#### XOR-Hash Protocol
 Sending data from some node to the receiver node.
 Because the node will deliver the data by fixed path (e.g. 1, 2, 3, 4), so it doesn't have to provide the url.
 ```
 curl --location --request POST '127.0.0.1:52090/sendContent' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "filename": "1.secret",
+    "filename": "new.secret"
+}'
+```
+#### XOR-Hash-NIZK
+Sending data from some node to the receiver node.
+Because the node will deliver the data by fixed path (e.g. 1, 2, 3, 4), so it doesn't have to provide the url.
+```
+curl --location --request POST '127.0.0.1:52090/NIZK' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "filename": "0.secret"
 }'
 ```
 #### Xorhash
