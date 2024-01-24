@@ -173,3 +173,15 @@ curl --location --request GET '127.0.0.1:52090/clearData'
 Sometimes, proof generating goes wrong. When an error occurred, the proof file
 will not be generated due to internal error. Hence, you can check the data list
 for making sure each step is correct in the progress.
+
+
+## Acknowledgements
+
+This research is supported by DARPA under grant number HR001120C0157. The views,
+opinions, and/or findings expressed are those of the author(s) and should not be
+interpreted as representing the official views or policies of the sponsoring
+organizations, agencies, or the U.S. Government.
+
+## LICENSE
+
+The 3-Clause BSD License
